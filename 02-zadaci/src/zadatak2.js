@@ -27,13 +27,18 @@ app.get("/vratiAutore",(req,res)=>{
     console.log(tempStorage)
     res.send(tempStorage)
 })
-app.delete("/izbrisiDjeloAutora/:id",(req,res)=>{
-    var {id}=req.params
-    var data1=req.body
-    if(tempStorage.find((data1)=>data1.id==id)){
-        tempStorage.djela.splice(0,1)
-    }
+app.delete("/izbrisiDjeloAutora",(req,res)=>{
+    var data=req.body
+    var autor = tempStorage.find((x)=>x.naziv ==data.naziv)
+    var ind= tempStorage.indexOf(autor)
+    tempStorage=tempStorage.splice(ind,1)
     console.log(tempStorage)
-    res.send(tempStorage)
+    console.log(autor)
+    var filter_djela=autor.djela.filter(x=>x!=data.djelo)
+    autor.djela=filter_djela
+    console.log("------------------------------")
+    console.log("Filter : ",autor)
+    console.log("New : ",tempStorage)
+    res.send({"Status":"OK"})
 })
 app.listen(port,()=>console.log(`Work on port ${port}`))
